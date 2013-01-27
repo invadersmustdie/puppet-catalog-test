@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require "puppet-catalog-test"
+require "optparse"
+
+options = {
+  :filter => PuppetCatalogTest::DEFAULT_FILTER
+}
+
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "USAGE: #{File.basename($0)} [options]"
+
+  opts.on("-m", "--module-paths PATHS", "Location of puppet modules, separated by collon") do |arg|
+    options[:module_paths] = arg.split(":")
+  end
+
+  opts.on("-M", "--manifest-path PATH", "Location of the puppet manifests (site.pp)") do |arg|
+    options[:manifest_path] = arg
+  end
+
+  opts.on("-f", "--filter PATTERN", "Filter test cases by pattern") do |arg|
+    options[:filter] = arg
+  end
+
+  opts.on("-s", "--scenario FILE", "Scenario definition to use") do |arg|
+    options[:scenario] = arg
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+opt_parser.parse!
+
+if options.empty?
+  puts opt_parser.help
+  exit
+end
+
+pct = PuppetCatalogTest::TestRunner.new(options[:manifest_path], options[:module_paths])
+
+if options[:scenario]
+  pct.load_scenario_yaml(options[:scenario], options[:filter])
+else
+  pct.load_all(options[:filter])
+end
+
+pct.run_tests!
