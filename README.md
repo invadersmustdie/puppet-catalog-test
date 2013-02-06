@@ -2,7 +2,7 @@
 
 ## Installation
 
-    gem install puppet-catalog-tests
+    gem install puppet-catalog-test
 
 ## Usage
 ```bash
