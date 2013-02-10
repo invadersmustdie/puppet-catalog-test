@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# allow loading library from workspace
+$:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
+
 require "puppet-catalog-test"
 require "optparse"
 
