@@ -2,8 +2,8 @@ Gem::Specification.new do |s|
   s.name = 'puppet-catalog-test'
   s.version = '0.1.0'
   s.homepage = 'https://github.com/invadersmustdie/puppet-catalog-test/'
-  s.summary = 'Tests all your puppet catalogs for compiler errors'
-  s.description = 'Tests all your puppet catalogs for compiler errors.'
+  s.summary = 'Test all your puppet catalogs for compiler warnings and errors'
+  s.description = 'Test all your puppet catalogs for compiler warnings and errors.'
 
   s.executables = ['puppet-catalog-test']
 

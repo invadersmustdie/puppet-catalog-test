@@ -1,4 +1,8 @@
-# Test all your puppet catalogs for compiler errors
+# Test all your puppet catalogs for compiler warnings and errors
+
+puppet-catalog-test is a tool for capturing and testing warnings and errors the puppet-compiler is emitting during the compilation process.
+
+For a more detailed insight into the puppet-compiler, you can take a look at <http://www.masterzen.fr/2012/03/17/puppet-internals-the-compiler/>.
 
 ## Installation
 
@@ -153,7 +157,7 @@ REDHAT_db-dev:
 
 ## Reporters (output plugins)
 
-Per default puppet-catalog-test will use the StdoutReporter which will represent the result like in the examples above. Besides this you can use in your own Reporter.
+Per default puppet-catalog-test uses the StdoutReporter which prints the result like in the examples above. Besides this you can use in your own Reporter.
 
 Puppet-Catalog-Test also ships a JunitXmlReporter which creates a junit compatible xml report.
 
