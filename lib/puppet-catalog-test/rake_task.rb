@@ -24,7 +24,12 @@ module PuppetCatalogTest
     end
 
     def setup
-      pct = TestRunner.new(@manifest_path, @module_paths)
+      puppet_config = {
+        :manifest_path => @manifest_path,
+        :module_paths => @module_paths
+      }
+
+      pct = TestRunner.new(puppet_config)
 
       if @scenario_yaml
         pct.load_scenario_yaml(@scenario_yaml, @filter)
