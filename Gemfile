@@ -5,6 +5,7 @@ puppetversion = ENV.key?('PUPPET_VERSION') ? "= #{ENV['PUPPET_VERSION']}" : ['>=
 gem "rake"
 gem "puppet", puppetversion
 gem "builder"
+gem "parallel"
 
 group :test do
   gem "mocha", :require => false

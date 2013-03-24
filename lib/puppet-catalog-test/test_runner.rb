@@ -1,5 +1,6 @@
 require "yaml"
 require "puppet"
+require "parallel"
 
 require "puppet-catalog-test/test_case"
 require "puppet-catalog-test/stdout_reporter"
@@ -117,8 +118,9 @@ module PuppetCatalogTest
       @out.puts "[INFO] Using puppet #{Puppet::PUPPETVERSION}"
 
       run_start = Time.now
+      proc_count = Parallel.processor_count
 
-      @test_cases.each do |tc|
+      processed_test_cases = Parallel.map(@test_cases, :in_processes => proc_count) do |tc|
         begin
           tc_start_time = Time.now
 
@@ -140,7 +142,11 @@ module PuppetCatalogTest
 
           @reporter.report_failed_test_case(tc)
         end
+
+        tc
       end
+
+      @test_cases = processed_test_cases
 
       @total_duration = Time.now - run_start
 
