@@ -6,6 +6,9 @@ gem "rake"
 gem "puppet", puppetversion
 gem "builder"
 
+gem "hiera"
+gem "hiera-puppet"
+
 group :test do
   gem "mocha", :require => false
 end

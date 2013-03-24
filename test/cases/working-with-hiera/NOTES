@@ -1,0 +1,1 @@
+puppet apply  --modulepath modules --confdir=. site.pp

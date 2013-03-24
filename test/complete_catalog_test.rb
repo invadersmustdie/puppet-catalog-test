@@ -55,4 +55,26 @@ class CompleteCatalogTest < PuppetCatalogTestCase
     assert_equal "fact 'fqdn' must be defined", tc.error
     assert tc.duration > 0
   end
+
+  def test_hiera_should_work
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working-with-hiera"))
+
+    assert_equal 2, pct.test_cases.size
+
+    result = pct.run_tests!
+    assert result
+
+    assert_equal 2, pct.test_cases.select { |tc| tc.passed == true }.size
+  end
+
+  def test_hiera_should_fail
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "failing-with-hiera"))
+
+    assert_equal 2, pct.test_cases.size
+
+    result = pct.run_tests!
+    assert !result
+
+    assert pct.test_cases.detect { |tc| tc.passed == false && tc.error =~ /Could not find data item message_that_doesnt_exist in any Hiera data file and no default/ }
+  end
 end

@@ -15,11 +15,13 @@ class PuppetCatalogTestCase < Test::Unit::TestCase
   def build_test_runner(base_dir)
     out_buffer = StringIO.new
 
-    pct = PuppetCatalogTest::TestRunner.new(
-      File.join(base_dir, "site.pp"),
-      [File.join(base_dir, "modules")],
-      out_buffer
-    )
+    puppet_config = {
+      :manifest_path => File.join(base_dir, "site.pp"),
+      :module_paths => [File.join(base_dir, "modules")],
+      :config_dir => base_dir
+    }
+
+    pct = PuppetCatalogTest::TestRunner.new(puppet_config, out_buffer)
 
     pct.exit_on_fail = false
 
