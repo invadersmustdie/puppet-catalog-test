@@ -28,7 +28,7 @@ class PuppetCatalogTestCase < Test::Unit::TestCase
     pct
   end
 
-  def build_test_runner_for_all_nodes(base_dir, empty_facts = false, filter = /.*/)
+  def build_test_runner_for_all_nodes(base_dir, empty_facts = false, filter = PuppetCatalogTest::Filter.new)
     pct = build_test_runner(base_dir)
 
     if empty_facts

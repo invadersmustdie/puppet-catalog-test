@@ -25,10 +25,23 @@ class ScenarioTest < PuppetCatalogTestCase
     assert_equal 2, pct.test_cases.select { |tc| tc.passed == false }.size
   end
 
-  def test_scenario_with_filter_should_work
+  def test_scenario_with_include_filter_should_work
     pct = build_test_runner(File.join(CASE_DIR, "failing"))
-    pct.load_scenario_yaml(File.join(CASE_DIR, "failing", "scenarios.yml"), /foo/)
+    filter = PuppetCatalogTest::Filter.new(/foo/)
+
+    pct.load_scenario_yaml(File.join(CASE_DIR, "failing", "scenarios.yml"), filter)
 
     assert_equal 1, pct.test_cases.size
+    assert_equal "foo", pct.test_cases.first.name
+  end
+
+  def test_scenario_with_exclude_filter_should_work
+    pct = build_test_runner(File.join(CASE_DIR, "failing"))
+    filter = PuppetCatalogTest::Filter.new(/.*/, /bar/)
+
+    pct.load_scenario_yaml(File.join(CASE_DIR, "failing", "scenarios.yml"), filter)
+
+    assert_equal 1, pct.test_cases.size
+    assert_equal "foo", pct.test_cases.first.name
   end
 end

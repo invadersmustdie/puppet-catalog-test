@@ -6,9 +6,7 @@ $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require "puppet-catalog-test"
 require "optparse"
 
-options = {
-  :filter => PuppetCatalogTest::DEFAULT_FILTER
-}
+options = {}
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = "USAGE: #{File.basename($0)} [options]"
@@ -21,8 +19,12 @@ opt_parser = OptionParser.new do |opts|
     options[:manifest_path] = arg
   end
 
-  opts.on("-f", "--filter PATTERN", "Filter test cases by pattern") do |arg|
-    options[:filter] = arg
+  opts.on("-i", "--include-pattern PATTERN", "Include only test cases that match pattern") do |arg|
+    options[:include_pattern] = arg
+  end
+
+  opts.on("-e", "--exclude-pattern PATTERN", "Exclude test cases that match pattern") do |arg|
+    options[:exclude_pattern] = arg
   end
 
   opts.on("-s", "--scenario FILE", "Scenario definition to use") do |arg|
@@ -42,12 +44,18 @@ if options.empty?
   exit
 end
 
-pct = PuppetCatalogTest::TestRunner.new(options[:manifest_path], options[:module_paths])
+pct = PuppetCatalogTest::TestRunner.new(
+  :manifest_path => options[:manifest_path],
+  :module_paths => options[:module_paths])
+
+filter = PuppetCatalogTest::Filter.new
+filter.include_pattern = options[:include_pattern] if options.has_key?(:include_pattern)
+filter.exclude_pattern = options[:exclude_pattern] if options.has_key?(:exclude_pattern)
 
 if options[:scenario]
-  pct.load_scenario_yaml(options[:scenario], options[:filter])
+  pct.load_scenario_yaml(options[:scenario], filter)
 else
-  pct.load_all(options[:filter])
+  pct.load_all(filter)
 end
 
 pct.run_tests!

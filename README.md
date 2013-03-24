@@ -11,10 +11,12 @@ For a more detailed insight into the puppet-compiler, you can take a look at <ht
 ## Usage
 ```bash
 $ puppet-catalog-test -h
+
 USAGE: puppet-catalog-test [options]
     -m, --module-paths PATHS         Location of puppet modules, separated by collon
     -M, --manifest-path PATH         Location of the puppet manifests (site.pp)
-    -f, --filter PATTERN             Filter test cases by pattern
+    -i, --include-pattern PATTERN    Include only test cases that match pattern
+    -e, --exclude-pattern PATTERN    Exclude test cases that match pattern
     -s, --scenario FILE              Scenario definition to use
     -h, --help                       Show this message
 ```
@@ -65,7 +67,8 @@ namespace :catalog do
     t.module_paths = ["modules"]
     t.manifest_path = File.join("scripts", "site.pp")
 
-    t.filter = ENV["filter"] if ENV["filter"]
+    t.include_pattern = ENV["include"]
+    t.exclude_pattern = ENV["exclude"]
   end
 end
 ```
@@ -100,7 +103,8 @@ namespace :catalog do
       "operatingsystem" => "RedHat"
     }
 
-    t.filter = ENV["filter"] if ENV["filter"]
+    t.include_pattern = ENV["include"]
+    t.exclude_pattern = ENV["exclude"]
   end
 end
 ```
@@ -119,7 +123,8 @@ namespace :catalog do
 
     t.scenario_yaml = "scenarios.yml"
 
-    t.filter = ENV["filter"] if ENV["filter"]
+    t.include_pattern = ENV["include"]
+    t.exclude_pattern = ENV["exclude"]
   end
 end
 ```

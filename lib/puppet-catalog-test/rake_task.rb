@@ -8,14 +8,13 @@ module PuppetCatalogTest
     attr_accessor :module_paths
     attr_accessor :manifest_path
     attr_accessor :scenario_yaml
-    attr_accessor :filter
+    attr_accessor :include_pattern
+    attr_accessor :exclude_pattern
     attr_accessor :facts
     attr_accessor :reporter
 
     def initialize(name, &task_block)
       desc "Compile all puppet catalogs" unless ::Rake.application.last_comment
-
-      @filter = PuppetCatalogTest::DEFAULT_FILTER
 
       task name do
         task_block.call(self) if task_block
@@ -30,6 +29,11 @@ module PuppetCatalogTest
       }
 
       pct = TestRunner.new(puppet_config)
+
+      @filter = Filter.new
+
+      @filter.include_pattern = @include_pattern if @include_pattern
+      @filter.exclude_pattern = @exclude_pattern if @exclude_pattern
 
       if @scenario_yaml
         pct.load_scenario_yaml(@scenario_yaml, @filter)
