@@ -44,13 +44,17 @@ module PuppetCatalogTest
 
       scenarios.each do |tc_name, facts|
         next if tc_name =~ /^__/
-        next if filter && !tc_name.match(filter)
+
+        if filter
+          next if filter.exclude_pattern && tc_name.match(filter.exclude_pattern)
+          next if filter.include_pattern && !tc_name.match(filter.include_pattern)
+        end
 
         add_test_case(tc_name, facts)
       end
     end
 
-    def load_all(filter = PuppetCatalogTest::DEFAULT_FILTER, facts = {})
+    def load_all(filter = Filter.new, facts = {})
       nodes = collect_puppet_nodes(filter)
 
       nodes.each do |n|
@@ -85,7 +89,16 @@ module PuppetCatalogTest
     def collect_puppet_nodes(filter)
       parser = Puppet::Parser::Parser.new("environment")
       nodes = parser.environment.known_resource_types.nodes.keys
-      nodes.select { |node| node.match(filter) }
+
+      if filter.exclude_pattern
+        nodes.delete_if { |node| node.match(filter.exclude_pattern) }
+      end
+
+      if filter.include_pattern
+        nodes.delete_if { |node| !node.match(filter.include_pattern) }
+      end
+
+      nodes
     end
 
     def run_tests!

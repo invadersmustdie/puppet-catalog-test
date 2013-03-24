@@ -24,16 +24,26 @@ class CompleteCatalogTest < PuppetCatalogTestCase
   end
 
   def test_all_with_filter_should_return_one_match
-    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working"), false, /foo/)
+    filter = PuppetCatalogTest::Filter.new(/foo/)
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working"), false, filter)
 
     assert_equal 1, pct.test_cases.size
     assert_equal "foo", pct.test_cases.first.name
   end
 
   def test_all_with_filter_should_return_no_matches
-    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working"), false, /talisker/)
+    filter = PuppetCatalogTest::Filter.new(/talisker/)
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working"), false, filter)
 
     assert_equal 0, pct.test_cases.size
+  end
+
+  def test_exclude_should_work
+    filter = PuppetCatalogTest::Filter.new(/.*/, /foo/)
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working"), false, filter)
+
+    assert_equal 1, pct.test_cases.size
+    assert_equal "default", pct.test_cases.first.name
   end
 
   def test_on_not_having_fqdn_set_should_fail
