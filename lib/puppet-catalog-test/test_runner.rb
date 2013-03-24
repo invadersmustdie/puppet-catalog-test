@@ -12,7 +12,11 @@ module PuppetCatalogTest
     attr_reader :test_cases
     attr_reader :total_duration
 
-    def initialize(manifest_path, module_paths, stdout_target = $stdout)
+    def initialize(puppet_config, stdout_target = $stdout)
+      if !puppet_config
+        raise ArgumentError, "No puppet_config hash supplied"
+      end
+
       @test_cases = []
       @exit_on_fail = true
       @out = stdout_target
@@ -21,12 +25,20 @@ module PuppetCatalogTest
 
       @total_duration = nil
 
+      manifest_path = puppet_config[:manifest_path]
+      module_paths = puppet_config[:module_paths]
+      config_dir = puppet_config[:config_dir]
+
       raise ArgumentError, "[ERROR] manifest_path must be specified" if !manifest_path
       raise ArgumentError, "[ERROR] manifest_path (#{manifest_path}) does not exist" if !FileTest.exist?(manifest_path)
 
       raise ArgumentError, "[ERROR] module_path must be specified" if !module_paths
       module_paths.each do |mp|
         raise ArgumentError, "[ERROR] module_path (#{mp}) does not exist" if !FileTest.directory?(mp)
+      end
+
+      if config_dir
+        Puppet.settings.handlearg("--confdir", config_dir)
       end
 
       Puppet.settings.handlearg("--config", ".")
@@ -121,6 +133,7 @@ module PuppetCatalogTest
             @reporter.report_passed_test_case(tc)
           end
         rescue => error
+          p error if $DEBUG
           tc.duration = Time.now - tc_start_time
           tc.error = error.message
           tc.passed = false

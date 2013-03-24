@@ -48,7 +48,7 @@ pct = PuppetCatalogTest::TestRunner.new(
   :manifest_path => options[:manifest_path],
   :module_paths => options[:module_paths])
 
-filter = Filter.new
+filter = PuppetCatalogTest::Filter.new
 filter.include_pattern = options[:include_pattern] if options.has_key?(:include_pattern)
 filter.exclude_pattern = options[:exclude_pattern] if options.has_key?(:exclude_pattern)
 
