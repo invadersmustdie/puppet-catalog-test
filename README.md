@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/invadersmustdie/puppet-catalog-test.png?branch=master)](https://travis-ci.org/invadersmustdie/puppet-catalog-test)
+[![Code Climate](https://codeclimate.com/github/invadersmustdie/puppet-catalog-test.png)](https://codeclimate.com/github/invadersmustdie/puppet-catalog-test)
 
 # Test all your puppet catalogs for compiler warnings and errors
 
