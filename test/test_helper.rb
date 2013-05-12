@@ -12,6 +12,10 @@ class PuppetCatalogTestCase < Test::Unit::TestCase
     Puppet.settings.instance_eval("clear_everything_for_tests")
   end
 
+  def default_test
+    # required by mocha + ruby 1.8.7
+  end
+
   def build_test_runner(base_dir)
     out_buffer = StringIO.new
 

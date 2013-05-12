@@ -18,7 +18,7 @@ PLATFORMS
 
 DEPENDENCIES
   builder
-  mocha
+  mocha (~> 0.13)
   parallel
   puppet (>= 2.7)
   rake

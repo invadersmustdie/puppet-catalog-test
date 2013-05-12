@@ -8,5 +8,5 @@ gem "builder"
 gem "parallel"
 
 group :test do
-  gem "mocha", :require => false
+  gem "mocha", "~> 0.13", :require => false
 end
