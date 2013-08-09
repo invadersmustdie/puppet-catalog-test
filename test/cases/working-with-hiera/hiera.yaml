@@ -1,8 +1,0 @@
----
-:backends:
-  - yaml
-:yaml:
-  :datadir: /Users/rlengwin/devel/github/puppet-catalog-test/test/cases/working-with-hiera/data
-
-:hierarchy:
-  - common
