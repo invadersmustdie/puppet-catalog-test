@@ -4,6 +4,10 @@ GEM
     builder (3.2.0)
     facter (1.6.18)
     hiera (1.0.0)
+    hiera (1.1.2)
+      json_pure
+    hiera-puppet (1.0.0)
+      hiera (~> 1.0)
     metaclass (0.0.1)
     mocha (0.13.3)
       metaclass (~> 0.0.1)
@@ -11,10 +15,6 @@ GEM
     puppet (3.0.1)
       facter (~> 1.6.11)
       hiera (~> 1.0.0)
-    hiera (1.1.2)
-      json_pure
-    hiera-puppet (1.0.0)
-      hiera (~> 1.0)
     rake (10.0.3)
 
 PLATFORMS
@@ -22,9 +22,9 @@ PLATFORMS
 
 DEPENDENCIES
   builder
-  mocha (~> 0.13)
-  parallel
   hiera
   hiera-puppet
+  mocha (~> 0.13)
+  parallel
   puppet (>= 2.7)
   rake
