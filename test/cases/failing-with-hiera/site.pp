@@ -5,5 +5,7 @@ node "foo" {
 node default {
   include myapp
 
-  $missing_key = hiera('message_that_doesnt_exist')
+  notify { 'tc_hiera_failing':
+    message => hiera('message_that_doesnt_exist')
+  }
 }

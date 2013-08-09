@@ -5,6 +5,7 @@ node "foo" {
 node default {
   include myapp
 
-  $existing_key = hiera('message')
-  notify {$existing_key: }
+  notify { 'tc_hiera_working':
+    message => hiera('message')
+  }
 }
