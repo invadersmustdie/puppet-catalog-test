@@ -7,6 +7,9 @@ gem "puppet", puppetversion
 gem "builder"
 gem "parallel"
 
+gem "hiera"
+gem "hiera-puppet"
+
 group :test do
   gem "mocha", "~> 0.13", :require => false
 end
