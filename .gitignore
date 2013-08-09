@@ -1,0 +1,3 @@
+test/cases/failing-with-hiera/hiera.yaml
+test/cases/working-with-hiera/hiera.yaml
+pkg
