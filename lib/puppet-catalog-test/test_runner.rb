@@ -29,6 +29,7 @@ module PuppetCatalogTest
       manifest_path = puppet_config[:manifest_path]
       module_paths = puppet_config[:module_paths]
       config_dir = puppet_config[:config_dir]
+      hiera_config = puppet_config[:hiera_config]
 
       raise ArgumentError, "[ERROR] manifest_path must be specified" if !manifest_path
       raise ArgumentError, "[ERROR] manifest_path (#{manifest_path}) does not exist" if !FileTest.exist?(manifest_path)
@@ -48,6 +49,11 @@ module PuppetCatalogTest
       module_path = module_paths.join(":")
 
       Puppet.settings.handlearg("--modulepath", module_path)
+
+      if hiera_config:
+        raise ArgumentError, "[ERROR] hiera_config  (#{hiera_config}) does not exist" if !FileTest.exist?(hiera_config)
+        Puppet.settings[:hiera_config] = hiera_config
+      end
 
       Puppet.parse_config
     end
