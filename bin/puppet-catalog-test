@@ -19,6 +19,10 @@ opt_parser = OptionParser.new do |opts|
     options[:manifest_path] = arg
   end
 
+  opts.on("-H", "--hiera-config PATH", "Location of hiera.yaml file") do |arg|
+    options[:hiera_config] = arg
+  end
+
   opts.on("-i", "--include-pattern PATTERN", "Include only test cases that match pattern") do |arg|
     options[:include_pattern] = arg
   end
@@ -46,7 +50,8 @@ end
 
 pct = PuppetCatalogTest::TestRunner.new(
   :manifest_path => options[:manifest_path],
-  :module_paths => options[:module_paths])
+  :module_paths => options[:module_paths],
+  :hiera_config => options[:hiera_config])
 
 filter = PuppetCatalogTest::Filter.new
 filter.include_pattern = options[:include_pattern] if options.has_key?(:include_pattern)
