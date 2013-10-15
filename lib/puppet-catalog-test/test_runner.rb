@@ -22,7 +22,13 @@ module PuppetCatalogTest
       @exit_on_fail = true
       @out = stdout_target
 
-      @reporter = StdoutReporter.new(stdout_target)
+      
+      if puppet_config[:xml]:
+         require 'puppet-catalog-test/junit_xml_reporter'
+         @reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-catalog-test", "puppet_catalogs.xml")
+      else
+         @reporter = StdoutReporter.new(stdout_target)
+      end
 
       @total_duration = nil
 

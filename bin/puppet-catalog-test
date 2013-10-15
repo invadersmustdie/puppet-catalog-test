@@ -39,6 +39,10 @@ opt_parser = OptionParser.new do |opts|
     options[:verbose] = 1
   end
 
+  opts.on("-x", "--xml", "Use xml report") do |arg|
+    options[:xml] = 1
+  end
+
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit
@@ -56,7 +60,8 @@ pct = PuppetCatalogTest::TestRunner.new(
   :manifest_path => options[:manifest_path],
   :module_paths => options[:module_paths],
   :hiera_config => options[:hiera_config],
-  :verbose => options[:verbose])
+  :verbose => options[:verbose],
+  :xml => options[:xml])
 
 filter = PuppetCatalogTest::Filter.new
 filter.include_pattern = options[:include_pattern] if options.has_key?(:include_pattern)
