@@ -30,6 +30,7 @@ module PuppetCatalogTest
       module_paths = puppet_config[:module_paths]
       config_dir = puppet_config[:config_dir]
       hiera_config = puppet_config[:hiera_config]
+      verbose = puppet_config[:verbose]
 
       raise ArgumentError, "[ERROR] manifest_path must be specified" if !manifest_path
       raise ArgumentError, "[ERROR] manifest_path (#{manifest_path}) does not exist" if !FileTest.exist?(manifest_path)
@@ -43,6 +44,12 @@ module PuppetCatalogTest
         Puppet.settings.handlearg("--confdir", config_dir)
       end
 
+      if verbose == 1
+          Puppet::Util::Log.newdestination(:console)
+          Puppet::Util::Log.level = :debug
+      end
+
+      Puppet.settings.handlearg("--config", ".")
       Puppet.settings.handlearg("--config", ".")
       Puppet.settings.handlearg("--manifest", manifest_path)
 
