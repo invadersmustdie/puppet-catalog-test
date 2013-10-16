@@ -7,6 +7,7 @@ module PuppetCatalogTest
 
     attr_accessor :module_paths
     attr_accessor :manifest_path
+    attr_accessor :config_dir
     attr_accessor :scenario_yaml
     attr_accessor :include_pattern
     attr_accessor :exclude_pattern
@@ -25,7 +26,8 @@ module PuppetCatalogTest
     def setup
       puppet_config = {
         :manifest_path => @manifest_path,
-        :module_paths => @module_paths
+        :module_paths => @module_paths,
+        :config_dir => @config_dir
       }
 
       pct = TestRunner.new(puppet_config)
