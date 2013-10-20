@@ -22,13 +22,21 @@ module PuppetCatalogTest
       @exit_on_fail = true
       @out = stdout_target
 
-      @reporter = StdoutReporter.new(stdout_target)
+      
+      if puppet_config[:xml]
+	 require 'puppet-catalog-test/junit_xml_reporter'
+         @reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-catalog-test", "puppet_catalogs.xml")
+      else
+         @reporter = StdoutReporter.new(stdout_target)
+      end
 
       @total_duration = nil
 
       manifest_path = puppet_config[:manifest_path]
       module_paths = puppet_config[:module_paths]
       config_dir = puppet_config[:config_dir]
+      hiera_config = puppet_config[:hiera_config]
+      verbose = puppet_config[:verbose]
 
       raise ArgumentError, "[ERROR] manifest_path must be specified" if !manifest_path
       raise ArgumentError, "[ERROR] manifest_path (#{manifest_path}) does not exist" if !FileTest.exist?(manifest_path)
@@ -42,12 +50,23 @@ module PuppetCatalogTest
         Puppet.settings.handlearg("--confdir", config_dir)
       end
 
+      if verbose == 1
+          Puppet::Util::Log.newdestination(:console)
+          Puppet::Util::Log.level = :debug
+      end
+
+      Puppet.settings.handlearg("--config", ".")
       Puppet.settings.handlearg("--config", ".")
       Puppet.settings.handlearg("--manifest", manifest_path)
 
       module_path = module_paths.join(":")
 
       Puppet.settings.handlearg("--modulepath", module_path)
+
+      if hiera_config
+        raise ArgumentError, "[ERROR] hiera_config  (#{hiera_config}) does not exist" if !FileTest.exist?(hiera_config)
+        Puppet.settings[:hiera_config] = hiera_config
+      end
 
       Puppet.parse_config
     end
