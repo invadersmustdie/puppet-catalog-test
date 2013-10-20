@@ -15,13 +15,15 @@ For a more detailed insight into the puppet-compiler, you can take a look at <ht
 ## Usage
 ```bash
 $ puppet-catalog-test -h
-
 USAGE: puppet-catalog-test [options]
     -m, --module-paths PATHS         Location of puppet modules, separated by collon
     -M, --manifest-path PATH         Location of the puppet manifests (site.pp)
+    -H, --hiera-config PATH          Location of hiera.yaml file
     -i, --include-pattern PATTERN    Include only test cases that match pattern
     -e, --exclude-pattern PATTERN    Exclude test cases that match pattern
     -s, --scenario FILE              Scenario definition to use
+    -v, --verbose                    Verbose
+    -x, --xml                        Use xml report
     -h, --help                       Show this message
 ```
 ## Examples
@@ -178,6 +180,25 @@ namespace :catalog do
   PuppetCatalogTest::RakeTask.new(:all) do |t|
     t.module_paths = [File.join("modules")]
     t.manifest_path = File.join("scripts", "site.pp")
+
+    t.reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-vagrant-playground", "reports/puppet_catalog.xml")
+  end
+end
+```
+
+## Testing with hiera
+
+Hiera configuration is loaded by setting the **config_dir** parameter in rake task or using the **-H, --hiera-config PATH** switch.
+
+```ruby
+require 'puppet-catalog-test'
+require 'puppet-catalog-test/junit_xml_reporter'
+
+namespace :catalog do
+  PuppetCatalogTest::RakeTask.new(:all) do |t|
+    t.module_paths = [File.join("modules")]
+    t.manifest_path = File.join("scripts", "site.pp")
+    t.config_dir = File.join("data") # expects hiera.yaml to be included in directory
 
     t.reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-vagrant-playground", "reports/puppet_catalog.xml")
   end
