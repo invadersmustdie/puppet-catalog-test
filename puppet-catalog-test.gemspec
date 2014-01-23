@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
 
   s.files += Dir["lib/**/*"]
 
-  s.add_dependency 'puppet'
   s.add_dependency 'parallel'
   s.add_dependency 'builder'
 
