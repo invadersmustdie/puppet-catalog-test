@@ -22,7 +22,7 @@ module PuppetCatalogTest
       @exit_on_fail = true
       @out = stdout_target
 
-      
+
       if puppet_config[:xml]
 	 require 'puppet-catalog-test/junit_xml_reporter'
          @reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-catalog-test", "puppet_catalogs.xml")
@@ -66,6 +66,10 @@ module PuppetCatalogTest
       if hiera_config
         raise ArgumentError, "[ERROR] hiera_config  (#{hiera_config}) does not exist" if !FileTest.exist?(hiera_config)
         Puppet.settings[:hiera_config] = hiera_config
+      end
+
+      Puppet::Node::Environment.new.each_plugin_directory do |dir|
+        $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
       end
 
       Puppet.parse_config
