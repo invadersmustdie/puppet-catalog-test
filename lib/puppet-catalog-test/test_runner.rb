@@ -118,7 +118,7 @@ module PuppetCatalogTest
     end
 
     def collect_puppet_nodes(filter)
-      parser = Puppet::Parser::Parser.new("environment")
+      parser = Puppet::Parser::Parser.new(Puppet::Node::Environment.new)
       nodes = parser.environment.known_resource_types.nodes.keys
 
       if filter.exclude_pattern
