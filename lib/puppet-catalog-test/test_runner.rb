@@ -22,12 +22,11 @@ module PuppetCatalogTest
       @exit_on_fail = true
       @out = stdout_target
 
-      
       if puppet_config[:xml]
-	 require 'puppet-catalog-test/junit_xml_reporter'
-         @reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-catalog-test", "puppet_catalogs.xml")
+        require 'puppet-catalog-test/junit_xml_reporter'
+        @reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-catalog-test", "puppet_catalogs.xml")
       else
-         @reporter = StdoutReporter.new(stdout_target)
+        @reporter = StdoutReporter.new(stdout_target)
       end
 
       @total_duration = nil
@@ -51,8 +50,8 @@ module PuppetCatalogTest
       end
 
       if verbose == 1
-          Puppet::Util::Log.newdestination(:console)
-          Puppet::Util::Log.level = :debug
+        Puppet::Util::Log.newdestination(:console)
+        Puppet::Util::Log.level = :debug
       end
 
       Puppet.settings.handlearg("--config", ".")
