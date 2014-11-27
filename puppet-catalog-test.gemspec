@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
 
   s.authors = ['Rene Lengwinat']
   s.email = 'rene.lengwinat@googlemail.com'
+  s.license = 'MIT'
 end
