@@ -1,0 +1,33 @@
+#!/bin/bash
+
+REPORT=test-report.md
+
+check() {
+	local ruby_version=$1
+	local puppet_version=$2
+
+	report_string="ruby_version=$ruby_version puppet_version=$puppet_version"
+
+	export PUPPET_VERSION=$puppet_version
+	rm -f Gemfile.lock
+	rbenv global $ruby_version
+
+	bundle install
+	bundle exec rake test
+
+
+	if [ $? -ne 0 ]; then
+		echo "FAILED $report_string" >> $REPORT
+	else
+		echo "SUCCEEDED $report_string" >> $REPORT
+	fi
+}
+
+echo "" > $REPORT
+
+check 1.9.3-p551 3.0.2
+check 1.9.3-p551 3.7.3
+check 1.9.3-p551 4.0.0
+check 1.9.3-p551 4.1.0
+
+cat $REPORT
