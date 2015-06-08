@@ -4,6 +4,7 @@ require "parallel"
 
 require "puppet-catalog-test/test_case"
 require "puppet-catalog-test/stdout_reporter"
+require "puppet-catalog-test/puppet_adapter_factory"
 
 module PuppetCatalogTest
   class TestRunner
@@ -21,6 +22,7 @@ module PuppetCatalogTest
       @test_cases = []
       @exit_on_fail = true
       @out = stdout_target
+      @puppet_adapter = PuppetAdapterFactory.create_adapter(puppet_config)
 
       if puppet_config[:xml]
         require 'puppet-catalog-test/junit_xml_reporter'
@@ -30,44 +32,6 @@ module PuppetCatalogTest
       end
 
       @total_duration = nil
-
-      manifest_path = puppet_config[:manifest_path]
-      module_paths = puppet_config[:module_paths]
-      config_dir = puppet_config[:config_dir]
-      hiera_config = puppet_config[:hiera_config]
-      verbose = puppet_config[:verbose]
-
-      raise ArgumentError, "[ERROR] manifest_path must be specified" if !manifest_path
-      raise ArgumentError, "[ERROR] manifest_path (#{manifest_path}) does not exist" if !FileTest.exist?(manifest_path)
-
-      raise ArgumentError, "[ERROR] module_path must be specified" if !module_paths
-      module_paths.each do |mp|
-        raise ArgumentError, "[ERROR] module_path (#{mp}) does not exist" if !FileTest.directory?(mp)
-      end
-
-      if config_dir
-        Puppet.settings.handlearg("--confdir", config_dir)
-      end
-
-      if verbose == 1
-        Puppet::Util::Log.newdestination(:console)
-        Puppet::Util::Log.level = :debug
-      end
-
-      Puppet.settings.handlearg("--config", ".")
-      Puppet.settings.handlearg("--config", ".")
-      Puppet.settings.handlearg("--manifest", manifest_path)
-
-      module_path = module_paths.join(":")
-
-      Puppet.settings.handlearg("--modulepath", module_path)
-
-      if hiera_config
-        raise ArgumentError, "[ERROR] hiera_config  (#{hiera_config}) does not exist" if !FileTest.exist?(hiera_config)
-        Puppet.settings[:hiera_config] = hiera_config
-      end
-
-      Puppet.parse_config
     end
 
     def load_scenario_yaml(yaml_file, filter = nil)
@@ -111,15 +75,13 @@ module PuppetCatalogTest
       hostname = node_fqdn.split('.').first
       facts['hostname'] = hostname
 
-      node = Puppet::Node.new(hostname)
-      node.merge(facts)
+      node = @puppet_adapter.create_node(hostname, facts)
 
-      Puppet::Parser::Compiler.compile(node)
+      @puppet_adapter.compile(node)
     end
 
     def collect_puppet_nodes(filter)
-      parser = Puppet::Parser::Parser.new(Puppet::Node::Environment.new)
-      nodes = parser.environment.known_resource_types.nodes.keys
+      nodes = @puppet_adapter.nodes
 
       if filter.exclude_pattern
         nodes.delete_if { |node| node.match(filter.exclude_pattern) }
@@ -133,7 +95,7 @@ module PuppetCatalogTest
     end
 
     def run_tests!
-      @out.puts "[INFO] Using puppet #{Puppet::PUPPETVERSION}"
+      @out.puts "[INFO] Using puppet #{@puppet_adapter.version}"
 
       run_start = Time.now
       proc_count = Parallel.processor_count
@@ -153,7 +115,11 @@ module PuppetCatalogTest
             @reporter.report_passed_test_case(tc)
           end
         rescue => error
-          p error if $DEBUG
+          if $DEBUG
+            p error
+            puts e.backtrace
+          end
+
           tc.duration = Time.now - tc_start_time
           tc.error = error.message
           tc.passed = false
