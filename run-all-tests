@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPORT=SUPPORTED_VERSIONS.MD
+REPORT=SUPPORTED_VERSIONS.md
 
 check() {
     local ruby_version=$1
