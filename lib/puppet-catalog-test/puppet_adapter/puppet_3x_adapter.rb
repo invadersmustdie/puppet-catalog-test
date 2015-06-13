@@ -1,3 +1,5 @@
+require "puppet"
+
 module PuppetCatalogTest
   class Puppet3xAdapter < BasePuppetAdapter
     def initialize(config)

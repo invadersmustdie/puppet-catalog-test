@@ -1,11 +1,13 @@
+require "puppet"
+
 module PuppetCatalogTest
   class Puppet4xAdapter < BasePuppetAdapter
     def initialize(config)
       super(config)
 
-      @env = Puppet.lookup(:current_environment)
-        .override_with(:manifest => config[:manifest_path])
-        .override_with(:modulepath => config[:module_paths])
+      @env = Puppet.lookup(:current_environment).
+        override_with(:manifest => config[:manifest_path]).
+        override_with(:modulepath => config[:module_paths])
 
       require 'puppet/test/test_helper'
 

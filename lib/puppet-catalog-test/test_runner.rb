@@ -1,5 +1,4 @@
 require "yaml"
-require "puppet"
 require "parallel"
 
 require "puppet-catalog-test/test_case"

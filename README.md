@@ -8,6 +8,10 @@ puppet-catalog-test is a tool for capturing and testing warnings and errors the 
 
 For a more detailed insight into the puppet-compiler, you can take a look at <http://www.masterzen.fr/2012/03/17/puppet-internals-the-compiler/>.
 
+## Supported Ruby + Puppet Versions
+
+Supported versions of Ruby <> Puppet combinations are listed in the [support matrix](SUPPORTED_VERSIONS.md). Combinations not listed might work, but aren't tested yet.
+
 ## Installation
 
     gem install puppet-catalog-test
