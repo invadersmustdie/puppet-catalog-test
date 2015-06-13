@@ -32,37 +32,38 @@ check() {
 unsupported() {
     local ruby_version=$1
     local puppet_version=$2
+    local note=$3
 
-    echo "|${ruby_version}|${puppet_version}|UNSUPPORTED|" >> $REPORT
+    echo "|${ruby_version}|${puppet_version}|UNSUPPORTED|${note}|" >> $REPORT
 }
 
-echo -e "| Ruby Version | Puppet Version | Status |\n|---|---|---|" > $REPORT
+echo -e "| Ruby Version | Puppet Version | Status | Note |\n|---|---|---|---|" > $REPORT
 
 if [ $# -gt 0 ]; then
   check $*
 else
   check 1.8.7-p374 3.0.2
   check 1.8.7-p374 3.7.3
-  unsupported 1.8.7-p374 4.0.0
-  unsupported 1.8.7-p374 4.1.0
+  unsupported 1.8.7-p374 4.0.0 "Puppet 4.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
+  unsupported 1.8.7-p374 4.1.0 "Puppet 4.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
 
   check 1.9.3-p551 3.0.2
   check 1.9.3-p551 3.7.3
   check 1.9.3-p551 4.0.0
   check 1.9.3-p551 4.1.0
 
-  check 2.0.0-p645 3.0.2
+  unsupported 2.0.0-p645 3.0.2 "Puppet <= 3.0.5 is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
   check 2.0.0-p645 3.7.3
   check 2.0.0-p645 4.0.0
   check 2.0.0-p645 4.1.0
 
-  check 2.1.6 3.0.2
+  unsupported 2.1.6 3.0.2 "Puppet <= 3.0.5 is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
   check 2.1.6 3.7.3
   check 2.1.6 4.0.0
   check 2.1.6 4.1.0
 
-  check 2.2.2 3.0.2
-  check 2.2.2 3.7.3
+  unsupported 2.2.2 3.0.2 "Puppet 3.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
+  unsupported 2.2.2 3.7.3 "Puppet 3.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
   check 2.2.2 4.0.0
   check 2.2.2 4.1.0
 fi
