@@ -50,6 +50,21 @@ else
   check 1.9.3-p551 3.7.3
   check 1.9.3-p551 4.0.0
   check 1.9.3-p551 4.1.0
+
+  check 2.0.0-p645 3.0.2
+  check 2.0.0-p645 3.7.3
+  check 2.0.0-p645 4.0.0
+  check 2.0.0-p645 4.1.0
+
+  check 2.1.6 3.0.2
+  check 2.1.6 3.7.3
+  check 2.1.6 4.0.0
+  check 2.1.6 4.1.0
+
+  check 2.2.2 3.0.2
+  check 2.2.2 3.7.3
+  check 2.2.2 4.0.0
+  check 2.2.2 4.1.0
 fi
 
 echo "*generated at `date`*" >> $REPORT

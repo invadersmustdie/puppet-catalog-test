@@ -8,4 +8,16 @@
 |1.9.3-p551|3.7.3|**SUPPORTED**|
 |1.9.3-p551|4.0.0|**SUPPORTED**|
 |1.9.3-p551|4.1.0|**SUPPORTED**|
-*generated at Sat Jun 13 19:22:58 CEST 2015*
+|2.0.0-p645|3.0.2|FAILED|
+|2.0.0-p645|3.7.3|**SUPPORTED**|
+|2.0.0-p645|4.0.0|**SUPPORTED**|
+|2.0.0-p645|4.1.0|**SUPPORTED**|
+|2.1.6|3.0.2|FAILED|
+|2.1.6|3.7.3|**SUPPORTED**|
+|2.1.6|4.0.0|**SUPPORTED**|
+|2.1.6|4.1.0|**SUPPORTED**|
+|2.2.2|3.0.2|FAILED|
+|2.2.2|3.7.3|FAILED|
+|2.2.2|4.0.0|**SUPPORTED**|
+|2.2.2|4.1.0|**SUPPORTED**|
+*generated at Sat Jun 13 20:18:16 CEST 2015*
