@@ -79,6 +79,8 @@ namespace :catalog do
 
     t.include_pattern = ENV["include"]
     t.exclude_pattern = ENV["exclude"]
+
+    t.verbose = true
   end
 end
 ```

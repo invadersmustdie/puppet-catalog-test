@@ -36,7 +36,7 @@ opt_parser = OptionParser.new do |opts|
   end
 
   opts.on("-v", "--verbose", "Verbose") do |arg|
-    options[:verbose] = 1
+    options[:verbose] = true
   end
 
   opts.on("-x", "--xml", "Use xml report") do |arg|

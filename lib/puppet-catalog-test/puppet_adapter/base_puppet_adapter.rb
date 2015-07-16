@@ -21,7 +21,7 @@ module PuppetCatalogTest
         Puppet.settings.handlearg("--confdir", config_dir)
       end
 
-      if verbose == 1
+      if verbose
         Puppet::Util::Log.newdestination(:console)
         Puppet::Util::Log.level = :debug
       end
