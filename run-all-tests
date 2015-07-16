@@ -20,7 +20,7 @@ check() {
     fi
 
     bundle install
-    bundle exec rake test
+    bundle exec rake
 
     if [ $? -ne 0 ]; then
         echo "|${ruby_version}|${puppet_version}|FAILED|" >> $REPORT

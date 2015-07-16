@@ -29,6 +29,15 @@ task :test_integration do
       exit_code = -1
       captured_output = ""
 
+      if FileTest.exist?("hiera.yaml.erb")
+        template = ERB.new(File.read("hiera.yaml.erb"))
+        working_directory = File.join(File.dirname(__FILE__), File.dirname(rf))
+
+        File.open("hiera.yaml", "w") do |fp|
+          fp.puts template.result(binding)
+        end
+      end
+
       IO.popen("bundle exec rake #{tc}") do |io|
         while (line = io.gets)
           captured_output << line

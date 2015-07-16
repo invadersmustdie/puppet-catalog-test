@@ -9,6 +9,10 @@ module PuppetCatalogTest
         override_with(:manifest => config[:manifest_path]).
         override_with(:modulepath => config[:module_paths])
 
+      @env.each_plugin_directory do |dir|
+        $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
+      end
+
       require 'puppet/test/test_helper'
 
       Puppet::Test::TestHelper.initialize
