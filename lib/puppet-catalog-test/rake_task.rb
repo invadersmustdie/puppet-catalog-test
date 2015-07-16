@@ -30,6 +30,10 @@ module PuppetCatalogTest
         :config_dir => @config_dir
       }
 
+      if @config_dir
+        puppet_config[:hiera_config] = File.join(@config_dir, "hiera.yaml")
+      end
+
       pct = TestRunner.new(puppet_config)
 
       @filter = Filter.new

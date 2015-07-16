@@ -95,6 +95,8 @@ In the case above no facts weren't defined so puppet-catalog-test falls back to 
 }
 ```
 
+**NOTE:** Working examples are bundled within [test/cases](test/cases).
+
 ### Testing all catalogs with custom facts
 
 It is also possible to define a custom set of facts. In this case the fallback facts listed in previous example won't be used.
@@ -202,6 +204,8 @@ namespace :catalog do
   PuppetCatalogTest::RakeTask.new(:all) do |t|
     t.module_paths = [File.join("modules")]
     t.manifest_path = File.join("scripts", "site.pp")
+
+    # crucial option for hiera integration
     t.config_dir = File.join("data") # expects hiera.yaml to be included in directory
 
     t.reporter = PuppetCatalogTest::JunitXmlReporter.new("puppet-vagrant-playground", "reports/puppet_catalog.xml")
