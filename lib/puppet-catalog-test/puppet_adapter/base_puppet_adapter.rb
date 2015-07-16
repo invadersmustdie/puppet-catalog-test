@@ -43,5 +43,7 @@ module PuppetCatalogTest
     def compile(node); end
     def create_node(hostname, facts); end
     def version; end
+    def prepare; end
+    def cleanup; end
   end
 end

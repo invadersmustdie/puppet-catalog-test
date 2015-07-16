@@ -7,8 +7,10 @@ module PuppetCatalogTest
 
       require 'puppet/test/test_helper'
 
-      Puppet::Test::TestHelper.new
-      Puppet::Test::TestHelper.before_all_tests
+      # works 3.7.x
+      if version.start_with?("3.7.")
+        Puppet::Test::TestHelper.initialize
+      end
 
       Puppet::Node::Environment.new.modules_by_path.each do |_, mod|
         mod.entries.each do |entry|
@@ -26,7 +28,14 @@ module PuppetCatalogTest
     end
 
     def compile(node)
-      Puppet::Parser::Compiler.compile(node)
+      begin
+        Puppet::Test::TestHelper.before_each_test
+        Puppet::Parser::Compiler.compile(node)
+      rescue => e
+        raise e
+      ensure
+        Puppet::Test::TestHelper.after_each_test
+      end
     end
 
     def create_node(hostname, facts)

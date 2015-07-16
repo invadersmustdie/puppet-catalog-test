@@ -20,4 +20,4 @@
 |2.2.2|3.7.3|UNSUPPORTED|Puppet 3.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)|
 |2.2.2|4.0.0|**SUPPORTED**|
 |2.2.2|4.1.0|**SUPPORTED**|
-*generated at Thu Jul 16 17:42:23 CEST 2015*
+*generated at Thu Jul 16 18:58:28 CEST 2015*
