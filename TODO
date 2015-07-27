@@ -1,12 +1,5 @@
 # Features
 - exclude nodes
-- support facts supplied by CLI (https://github.com/invadersmustdie/puppet-catalog-test/pull/14)
-- clear state in Puppet::Settings (https://github.com/aguy/puppet-catalog-test/commit/cd5ea5497dcb8d5539616a804edfa58f55e240d8)
 
 # Design
 - extract reporter into factory
-
-# Support
-- test for 2.0.0-p645
-- test for 2.1.6
-- test for 2.2.2
