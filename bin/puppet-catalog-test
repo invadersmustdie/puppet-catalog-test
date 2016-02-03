@@ -42,6 +42,10 @@ opt_parser = OptionParser.new do |opts|
     options[:custom_facts][k] = v
   end
 
+  opts.on("-p", "--parser (current|future)", "Change puppet parser (3.x only)") do |arg|
+    options[:parser] = arg
+  end
+
   opts.on("-v", "--verbose", "Verbose") do |arg|
     options[:verbose] = true
   end
@@ -68,6 +72,7 @@ pct = PuppetCatalogTest::TestRunner.new(
   :module_paths => options[:module_paths],
   :hiera_config => options[:hiera_config],
   :verbose => options[:verbose],
+  :parser => options[:parser],
   :xml => options[:xml])
 
 filter = PuppetCatalogTest::Filter.new

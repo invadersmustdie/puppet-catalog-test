@@ -1,5 +1,5 @@
 module PuppetCatalogTest
-  VERSION = "0.2.2"
+  VERSION = "0.4.1"
 
   DEFAULT_FILTER = /.*/
 
