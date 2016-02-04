@@ -42,7 +42,7 @@ opt_parser = OptionParser.new do |opts|
     options[:custom_facts][k] = v
   end
 
-  opts.on("-p", "--parser (current|future)", "Change puppet parser (3.x only)") do |arg|
+  opts.on("-p", "--parser (current|future)", "Change puppet parser (3.2+ only)") do |arg|
     options[:parser] = arg
   end
 

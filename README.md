@@ -27,7 +27,7 @@ USAGE: puppet-catalog-test [options]
     -e, --exclude-pattern PATTERN    Exclude test cases that match pattern
     -s, --scenario FILE              Scenario definition to use
     -f, --fact KEY=VALUE             Add custom fact
-    -p, --parser (current|future)    Change puppet parser (3.x only)
+    -p, --parser (current|future)    Change puppet parser (3.2+ only)
     -v, --verbose                    Verbose
     -x, --xml                        Use xml report
     -h, --help                       Show this message
