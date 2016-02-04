@@ -1,5 +1,7 @@
 require "rake/testtask"
 require "bundler/gem_tasks"
+require "puppet/version"
+require "rubygems"
 
 desc "Clean workspace"
 task :clean do
@@ -20,6 +22,9 @@ task :test_integration do
 
   Dir["test/**/Rakefile"].each do |rf|
     supposed_to_fail = rf.include?("failing")
+    if rf.include?("future-parser")
+      supposed_to_fail = Gem::Version.new(Puppet.version) > Gem::Version.new('3.2.0')
+    end
     Dir.chdir rf.split("/")[0..-2].join("/")
 
     ["catalog:scenarios", "catalog:all"].each do |tc|
