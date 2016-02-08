@@ -67,11 +67,12 @@ else
   check 2.1.6 4.3.2
 
   unsupported 2.2.2 3.0.2 "Puppet 3.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
-  unsupported 2.2.2 3.7.3 "Puppet 3.x is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
+  check 2.2.2 3.7.3
   check 2.2.2 4.0.0
   check 2.2.2 4.1.0
   check 2.2.0 4.3.2
 
+  check 2.3.0 3.8.5
   check 2.3.0 4.0.0
   check 2.3.0 4.3.2
 fi
