@@ -5,14 +5,15 @@ module PuppetCatalogTest
   class RakeTask < ::Rake::TaskLib
     include ::Rake::DSL if defined?(::Rake::DSL)
 
-    attr_accessor :module_paths
-    attr_accessor :manifest_path
     attr_accessor :config_dir
-    attr_accessor :scenario_yaml
-    attr_accessor :include_pattern
     attr_accessor :exclude_pattern
     attr_accessor :facts
+    attr_accessor :include_pattern
+    attr_accessor :manifest_path
+    attr_accessor :module_paths
+    attr_accessor :parser
     attr_accessor :reporter
+    attr_accessor :scenario_yaml
     attr_accessor :verbose
 
     def initialize(name, &task_block)
@@ -26,9 +27,10 @@ module PuppetCatalogTest
 
     def setup
       puppet_config = {
+        :config_dir => @config_dir,
         :manifest_path => @manifest_path,
         :module_paths => @module_paths,
-        :config_dir => @config_dir,
+        :parser => @parser,
         :verbose => @verbose
       }
 

@@ -27,6 +27,7 @@ USAGE: puppet-catalog-test [options]
     -e, --exclude-pattern PATTERN    Exclude test cases that match pattern
     -s, --scenario FILE              Scenario definition to use
     -f, --fact KEY=VALUE             Add custom fact
+    -p, --parser (current|future)    Change puppet parser (3.2+ only)
     -v, --verbose                    Verbose
     -x, --xml                        Use xml report
     -h, --help                       Show this message
@@ -122,6 +123,23 @@ namespace :catalog do
     t.exclude_pattern = ENV["exclude"]
   end
 end
+```
+
+### Testing catalog with future parser
+```ruby
+require 'puppet-catalog-test'
+
+namespace :catalog do
+  PuppetCatalogTest::RakeTask.new(:scenarios) do |t|
+    t.module_paths = ["modules"]
+    t.manifest_path = File.join("scripts", "site.pp")
+
+    t.scenario_yaml = "scenarios.yml"
+    t.parser = "future"
+
+    t.include_pattern = ENV["include"]
+    t.exclude_pattern = ENV["exclude"]
+  end
 ```
 
 ## Scenario testing

@@ -1,4 +1,5 @@
 require "puppet"
+require "rubygems"
 
 module PuppetCatalogTest
   class Puppet3xAdapter < BasePuppetAdapter
@@ -6,9 +7,10 @@ module PuppetCatalogTest
       super(config)
 
       require 'puppet/test/test_helper'
+      parser = config[:parser]
 
-      # works 3.7.x
-      if version.start_with?("3.7.")
+      # initialize was added in 3.1.0
+      if Gem::Version.new(version) > Gem::Version.new('3.1.0')
         Puppet::Test::TestHelper.initialize
       end
 
@@ -17,6 +19,14 @@ module PuppetCatalogTest
           ldir = entry.plugin_directory
           $LOAD_PATH << ldir unless $LOAD_PATH.include?(ldir)
         end
+      end
+
+      # future parser was added in 3.2.0
+      if parser and Gem::Version.new(version) > Gem::Version.new('3.2.0')
+        parser_regex = /^(current|future)$/
+        raise ArgumentError, "[ERROR] parser (#{parser}) is not a valid parser, should be 'current' or 'future'" if !parser.match(parser_regex)
+        puts "[INFO] Using #{parser} puppet parser"
+        Puppet.settings[:parser] = parser
       end
 
       Puppet.parse_config

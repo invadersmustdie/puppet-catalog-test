@@ -1,0 +1,5 @@
+foo:
+  fqdn: foo.local
+
+bar:
+  fqdn: bar.local
