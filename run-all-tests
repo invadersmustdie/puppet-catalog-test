@@ -54,6 +54,7 @@ else
 
   unsupported 2.0.0-p645 3.0.2 "Puppet <= 3.0.5 is not supported by Puppetlabs [Ruby Versions](https://docs.puppetlabs.com/guides/platforms.html#ruby-versions)"
   check 2.0.0-p645 3.7.3
+  check 2.0.0-p645 3.8.5
   check 2.0.0-p645 4.0.0
   check 2.0.0-p645 4.1.0
 
