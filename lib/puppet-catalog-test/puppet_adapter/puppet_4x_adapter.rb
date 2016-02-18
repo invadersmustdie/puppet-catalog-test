@@ -28,7 +28,9 @@ module PuppetCatalogTest
     end
 
     def create_node(hostname, facts)
-      Puppet::Node.new(hostname, :facts => Puppet::Node::Facts.new("facts", facts))
+      node = Puppet::Node.new(hostname, :facts => Puppet::Node::Facts.new("facts", facts))
+      node.merge(facts)
+      node
     end
 
     def compile(node)

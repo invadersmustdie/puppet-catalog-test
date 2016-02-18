@@ -12,6 +12,17 @@ class CompleteCatalogTest < PuppetCatalogTestCase
     assert_equal 2, pct.test_cases.select { |tc| tc.passed == true }.size
   end
 
+  def test_all_with_working_catalog_should_have_facts
+    pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "working-with-facts"))
+
+    assert_equal 2, pct.test_cases.size
+
+    result = pct.run_tests!
+    assert result
+
+    assert_equal 2, pct.test_cases.select { |tc| tc.passed == true }.size
+  end
+
   def test_all_with_broken_catalog_should_fail
     pct = build_test_runner_for_all_nodes(File.join(CASE_DIR, "failing"))
 
