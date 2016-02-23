@@ -34,14 +34,7 @@ module PuppetCatalogTest
     end
 
     def compile(node)
-      begin
-        Puppet::Test::TestHelper.before_each_test
-        Puppet::Parser::Compiler.compile(node)
-      rescue => e
-        raise e
-      ensure
-        Puppet::Test::TestHelper.after_each_test
-      end
+      Puppet::Parser::Compiler.compile(node)
     end
   end
 end
