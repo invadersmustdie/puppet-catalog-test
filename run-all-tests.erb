@@ -4,6 +4,16 @@
 
 REPORT=SUPPORTED_VERSIONS.md
 
+global_status="all-good"
+
+fail() {
+  local ruby_version=$1
+  local puppet_version=$2
+
+  echo "|${ruby_version}|${puppet_version}|FAILED|" >> $REPORT
+  global_status="failure-detected"
+}
+
 check() {
     local ruby_version=$1
     local puppet_version=$2
@@ -23,12 +33,17 @@ check() {
     fi
 
     bundle install
-    bundle exec rake
-
     if [ $? -ne 0 ]; then
-        echo "|${ruby_version}|${puppet_version}|FAILED|" >> $REPORT
+      echo "==> bundle install failed!"
+      fail $ruby_version $puppet_version
     else
+      bundle exec rake
+
+      if [ $? -ne 0 ]; then
+        fail $ruby_version $puppet_version
+      else
         echo "|${ruby_version}|${puppet_version}|**SUPPORTED**|" >> $REPORT
+      fi
     fi
 }
 
@@ -54,3 +69,13 @@ fi
 echo "*generated at `date`*" >> $REPORT
 
 cat $REPORT
+
+if [ "${global_status}" != "all-good" ]; then
+  echo
+  echo "  ************************"
+  echo "  *** FAILURE DETECTED ***"
+  echo "  ************************"
+  echo
+
+  exit 1
+fi
