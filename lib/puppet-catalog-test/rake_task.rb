@@ -17,7 +17,7 @@ module PuppetCatalogTest
     attr_accessor :verbose
 
     def initialize(name, &task_block)
-      desc "Compile all puppet catalogs" unless ::Rake.application.last_comment
+      desc "Compile all puppet catalogs" unless ::Rake.application.last_description
 
       task name do
         task_block.call(self) if task_block

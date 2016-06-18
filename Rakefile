@@ -2,6 +2,8 @@ require "rake/testtask"
 require "bundler/gem_tasks"
 require "puppet/version"
 require "rubygems"
+require "yaml"
+require "erb"
 
 desc "Clean workspace"
 task :clean do
@@ -69,6 +71,31 @@ task :test_integration do
   if !all_tests_green
     fail
   end
+end
+
+task :generate_test_matrix do
+  # rbenv doesn't support fuzzy version matching, so we are using a good old mapping table
+  ruby_version_mapping =  {
+    "1.8.7" => "1.8.7-p374",
+    "1.9.3" => "1.9.3-p551",
+    "2.0.0" => "2.0.0-p645"
+  }
+
+  config = YAML.load_file(".travis.yml")
+  checks = []
+
+  config["rvm"].each do |ruby_version|
+    config["env"].each do |env_var|
+      if !config["matrix"]["exclude"].detect { |ex| ex["rvm"] == ruby_version && ex["env"] == env_var }
+        puppet_version = env_var.match(/^PUPPET_VERSION=(.*)$/)[1]
+        mapped_ruby_version = ruby_version_mapping[ruby_version] || ruby_version
+        checks << "check #{mapped_ruby_version} #{puppet_version}"
+      end
+    end
+  end
+
+  template = ERB.new(File.read("run-all-tests.erb"))
+  File.open("run-all-tests", "w+") { |fp| fp.puts template.result(binding) }
 end
 
 task :default => [:test, :test_integration]
