@@ -18,6 +18,10 @@ module PuppetCatalogTest
         raise ArgumentError, "No puppet_config hash supplied"
       end
 
+      if Puppet::PUPPETVERSION.to_i >= 3
+        Puppet.settings.send(:clear_everything_for_tests)
+      end
+      
       @test_cases = []
       @exit_on_fail = true
       @out = stdout_target
