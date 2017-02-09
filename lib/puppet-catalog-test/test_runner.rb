@@ -12,8 +12,9 @@ module PuppetCatalogTest
 
     attr_reader :test_cases
     attr_reader :total_duration
+    attr_reader :runner_config
 
-    def initialize(puppet_config, stdout_target = $stdout)
+    def initialize(puppet_config, stdout_target = $stdout, runner_config = {})
       if !puppet_config
         raise ArgumentError, "No puppet_config hash supplied"
       end
@@ -22,6 +23,7 @@ module PuppetCatalogTest
       @exit_on_fail = true
       @out = stdout_target
       @puppet_adapter = PuppetAdapterFactory.create_adapter(puppet_config)
+      @runner_config = runner_config
 
       if puppet_config[:xml]
         require 'puppet-catalog-test/junit_xml_reporter'
@@ -97,9 +99,10 @@ module PuppetCatalogTest
       @out.puts "[INFO] Using puppet #{@puppet_adapter.version}"
 
       run_start = Time.now
-      proc_count = Parallel.processor_count
+      proc_count = @runner_config[:parallel_tests] || Parallel.processor_count
+      isolation = @runner_config[:isolation].nil? ? true : @runner_config[:isolation]
 
-      processed_test_cases = Parallel.map(@test_cases, :in_processes => proc_count) do |tc|
+      processed_test_cases = Parallel.map(@test_cases, :in_processes => proc_count, :isolation => isolation) do |tc|
         begin
           tc_start_time = Time.now
 

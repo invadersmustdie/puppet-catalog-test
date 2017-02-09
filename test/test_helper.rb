@@ -26,7 +26,9 @@ class PuppetCatalogTestCase < Test::Unit::TestCase
       :hiera_config => hiera_config(base_dir)
     }
 
-    pct = PuppetCatalogTest::TestRunner.new(puppet_config, out_buffer)
+    runner_config = {}
+
+    pct = PuppetCatalogTest::TestRunner.new(puppet_config, out_buffer, runner_config)
 
     pct.exit_on_fail = false
 
