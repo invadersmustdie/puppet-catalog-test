@@ -40,7 +40,8 @@ module PuppetCatalogTest
     def compile(node)
       begin
         Puppet::Test::TestHelper.before_each_test
-        Puppet::Parser::Compiler.compile(node)
+        catalog = Puppet::Parser::Compiler.compile(node)
+        validate_relationships(catalog)
       rescue => e
         raise e
       ensure
@@ -56,6 +57,41 @@ module PuppetCatalogTest
 
     def version
       Puppet::PUPPETVERSION
+    end
+
+    def validate_relationships(catalog)
+      catalog.resources.each do |resource|
+        next unless resource.is_a?(Puppet::Resource)
+
+        resource.each do |param, value|
+          pclass = Puppet::Type.metaparamclass(param)
+          if !pclass.nil? && pclass < Puppet::Type::RelationshipMetaparam
+            next if value.is_a?(String)
+            check_if_resource_exists(catalog, resource, param, value)
+          end
+        end
+      end
+      nil
+    end
+
+    private
+
+    def check_if_resource_exists(catalog, resource, param, value)
+      case value
+      when Array
+        value.each { |v| check_if_resource_exists(catalog, resource, param, v) }
+      when Puppet::Resource
+        matching_resource = catalog.resources.find do |resource|
+          resource.type == value.type &&
+            (resource.title.to_s == value.title.to_s ||
+             resource[:name] == value.title ||
+             resource[:alias] == value.title)
+        end
+
+        unless matching_resource
+          fail "#{resource} has #{param} relationship to invalid resource #{value}"
+        end
+      end
     end
   end
 end
