@@ -14,6 +14,10 @@ gem "puppet", puppet_version
 gem "builder"
 gem "parallel", parallel_version
 
+if RUBY_VERSION.start_with?("1.8")
+  gem "json_pure", "= 1.8.3"
+end
+
 gem "hiera"
 gem "hiera-puppet"
 
