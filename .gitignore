@@ -6,3 +6,5 @@ Gemfile.lock
 .ruby-version
 last-test.log
 run-all-tests
+docker-test/share
+docker-test/cache
