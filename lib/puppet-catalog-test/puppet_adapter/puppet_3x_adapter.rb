@@ -39,7 +39,6 @@ module PuppetCatalogTest
 
     def compile(node)
       begin
-        Puppet::Test::TestHelper.before_each_test
         catalog = Puppet::Parser::Compiler.compile(node)
         validate_relationships(catalog)
       rescue => e
@@ -50,6 +49,7 @@ module PuppetCatalogTest
     end
 
     def create_node(hostname, facts)
+      Puppet::Test::TestHelper.before_each_test
       node = Puppet::Node.new(hostname)
       node.merge(facts)
       node
