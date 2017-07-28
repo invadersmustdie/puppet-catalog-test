@@ -9,6 +9,8 @@ module PuppetCatalogTest
       require 'puppet/test/test_helper'
       parser = config[:parser]
 
+      init_config
+      
       # initialize was added in 3.1.0
       if Gem::Version.new(version) > Gem::Version.new('3.1.0')
         Puppet::Test::TestHelper.initialize
