@@ -4,6 +4,7 @@ module PuppetCatalogTest
   class BasePuppetAdapter
     def initialize(config)
       @config = config
+    end
     
     def init_config()
       config = @config
