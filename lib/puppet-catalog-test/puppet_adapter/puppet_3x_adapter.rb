@@ -14,6 +14,8 @@ module PuppetCatalogTest
         Puppet::Test::TestHelper.initialize
       end
 
+      Puppet::Test::TestHelper.before_all_tests
+      
       Puppet::Node::Environment.new.modules_by_path.each do |_, mod|
         mod.entries.each do |entry|
           ldir = entry.plugin_directory
@@ -50,6 +52,7 @@ module PuppetCatalogTest
 
     def create_node(hostname, facts)
       Puppet::Test::TestHelper.before_each_test
+      init_config
       node = Puppet::Node.new(hostname)
       node.merge(facts)
       node

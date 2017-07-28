@@ -3,6 +3,10 @@ require "puppet"
 module PuppetCatalogTest
   class BasePuppetAdapter
     def initialize(config)
+      @config = config
+    
+    def init_config()
+      config = @config
       manifest_path = config[:manifest_path]
       module_paths = config[:module_paths]
       config_dir = config[:config_dir]
