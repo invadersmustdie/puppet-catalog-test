@@ -99,7 +99,7 @@ module PuppetCatalogTest
       run_start = Time.now
       proc_count = Parallel.processor_count
 
-      processed_test_cases = Parallel.map(@test_cases, :in_processes => proc_count) do |tc|
+      processed_test_cases = Parallel.map(@test_cases, :in_processes => proc_count, :isolation => true) do |tc|
         begin
           tc_start_time = Time.now
 
