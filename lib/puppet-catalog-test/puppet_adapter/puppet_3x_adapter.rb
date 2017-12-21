@@ -9,11 +9,15 @@ module PuppetCatalogTest
       require 'puppet/test/test_helper'
       parser = config[:parser]
 
+      init_config
+      
       # initialize was added in 3.1.0
       if Gem::Version.new(version) > Gem::Version.new('3.1.0')
         Puppet::Test::TestHelper.initialize
       end
 
+      Puppet::Test::TestHelper.before_all_tests
+      
       Puppet::Node::Environment.new.modules_by_path.each do |_, mod|
         mod.entries.each do |entry|
           ldir = entry.plugin_directory
@@ -39,7 +43,6 @@ module PuppetCatalogTest
 
     def compile(node)
       begin
-        Puppet::Test::TestHelper.before_each_test
         catalog = Puppet::Parser::Compiler.compile(node)
         validate_relationships(catalog)
       rescue => e
@@ -50,6 +53,8 @@ module PuppetCatalogTest
     end
 
     def create_node(hostname, facts)
+      Puppet::Test::TestHelper.before_each_test
+      init_config
       node = Puppet::Node.new(hostname)
       node.merge(facts)
       node
