@@ -9,7 +9,7 @@ module PuppetCatalogTest
     def self.create_adapter(config)
       if Puppet.version.start_with?("3.")
         return Puppet3xAdapter.new(config)
-      elsif Puppet.version.start_with?("4.")
+      elsif Puppet.version =~ /^(4|5)/
         return Puppet4xAdapter.new(config)
       elsif Puppet.version.start_with?("5.")
         return Puppet4xAdapter.new(config)
