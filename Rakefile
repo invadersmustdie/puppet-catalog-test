@@ -12,6 +12,18 @@ task :clean do
   sh "rm test/cases/failing-with-hiera/hiera.yaml"
 end
 
+desc "Fix permissions"
+task :pre_release do
+  sh "chmod -R a+r lib"
+  sh "chmod a+r puppet-catalog-test.gemspec"
+  sh "chmod a+rx bin/puppet-catalog-test"
+  sh "chmod a+r Rakefile README.md"
+
+  puts "=> Don't forget to adjust versions"
+  sh "grep -r VERSION lib"
+  sh "grep version puppet-catalog-test.gemspec"
+end
+
 Rake::TestTask.new do |t|
   t.libs << "test"
   t.test_files = FileList['test/*_test.rb']
