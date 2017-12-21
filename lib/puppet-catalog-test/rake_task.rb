@@ -15,6 +15,8 @@ module PuppetCatalogTest
     attr_accessor :reporter
     attr_accessor :scenario_yaml
     attr_accessor :verbose
+    attr_accessor :isolation
+    attr_accessor :parallel_tests
 
     def initialize(name, &task_block)
       desc "Compile all puppet catalogs" unless ::Rake.application.last_description
@@ -34,11 +36,16 @@ module PuppetCatalogTest
         :verbose => @verbose
       }
 
+      runner_config = {
+        :isolation => @isolation,
+        :parallel_tests => @parallel_tests,
+      }
+
       if @config_dir
         puppet_config[:hiera_config] = File.join(@config_dir, "hiera.yaml")
       end
 
-      pct = TestRunner.new(puppet_config)
+      pct = TestRunner.new(puppet_config, $stdout, runner_config)
 
       @filter = Filter.new
 
