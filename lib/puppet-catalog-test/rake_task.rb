@@ -52,9 +52,15 @@ module PuppetCatalogTest
         test_facts = @facts || fallback_facts
 
         nodes.each do |nodename|
+          if nodename.match(/\./)
+            fqdn = nodename
+          else
+            fqdn = "#{nodename}.localdomain"
+          end
           facts = test_facts.merge({
             'hostname' => nodename,
-            'fqdn' => "#{nodename}.localdomain"
+            'fqdn' => fqdn,
+            'clientcert' => fqdn
           })
 
           pct.add_test_case(nodename, facts)
