@@ -7,7 +7,7 @@ module PuppetCatalogTest
       super(config)
 
       require 'puppet/test/test_helper'
-      parser = config[:parser]
+
 
       init_config
       
@@ -23,14 +23,6 @@ module PuppetCatalogTest
           ldir = entry.plugin_directory
           $LOAD_PATH << ldir unless $LOAD_PATH.include?(ldir)
         end
-      end
-
-      # future parser was added in 3.2.0
-      if parser and Gem::Version.new(version) > Gem::Version.new('3.2.0')
-        parser_regex = /^(current|future)$/
-        raise ArgumentError, "[ERROR] parser (#{parser}) is not a valid parser, should be 'current' or 'future'" if !parser.match(parser_regex)
-        puts "[INFO] Using #{parser} puppet parser"
-        Puppet.settings[:parser] = parser
       end
 
       Puppet.parse_config
