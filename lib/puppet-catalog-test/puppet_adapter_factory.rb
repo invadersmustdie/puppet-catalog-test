@@ -13,6 +13,8 @@ module PuppetCatalogTest
         return Puppet4xAdapter.new(config)
       elsif Puppet.version.start_with?("5.")
         return Puppet4xAdapter.new(config)
+      elsif Puppet.version.start_with?("6.")
+        return Puppet4xAdapter.new(config)
       end
 
       raise RuntimeException, "Unsupported Puppet version detected (#{Puppet.version})"
