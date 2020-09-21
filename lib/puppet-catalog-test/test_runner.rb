@@ -74,7 +74,7 @@ module PuppetCatalogTest
       hostname = node_fqdn.split('.').first
       facts['hostname'] = hostname
 
-      node = @puppet_adapter.create_node(hostname, facts)
+      node = @puppet_adapter.create_node(node_fqdn, facts)
 
       @puppet_adapter.compile(node)
     end
